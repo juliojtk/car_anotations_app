@@ -7,9 +7,9 @@ import 'package:mobx/mobx.dart';
 
 part 'car_list_back.g.dart';
 
-class CarListBack = _CarListBack with _$CarListBack;
+class CarListBack = CarListBackBase with _$CarListBack;
 
-abstract class _CarListBack with Store {
+abstract class CarListBackBase with Store {
 
 //Instanciando, usando injeção de dependencia
 var _carService = GetIt.I.get<CarService>();

@@ -1,13 +1,10 @@
 import 'package:car_anotations_app/app/view/viewBack/car_form_back.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class CarForm extends StatelessWidget {
 
   final _carForm = GlobalKey<FormState>();
-  bool part = false;
-  bool seg = false;
-  String dateFormatted;
 
   @override
   Widget build(BuildContext context) {
@@ -23,34 +20,36 @@ class CarForm extends StatelessWidget {
 
   Widget _body(BuildContext context){
     var _back = CarFormBack(context);
+
     return SingleChildScrollView(
       child: Padding(
       padding: EdgeInsets.all(10),
       child: Form(
         key: _carForm,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                fieldCarName(_back),
-                SizedBox(width: 15),
-                fieldCarBoard(_back),
-                ],
-              ),
+        child: Observer(builder: (context){
+          return Column(
+            children: [
+              Row(
+                children: [
+                  fieldCarName(_back),
+                  SizedBox(width: 15),
+                  fieldCarBoard(_back),
+                  ],
+                ),
               SizedBox(height: 10),
               fieldCarColor(_back),
               labelTypeService(context),
               Row(
                 children: [
-                  checkPart(context),
-                  checkSeg(context),
+                  checkPart(context, _back),
+                  checkSeg(context, _back),
                 ],
               ),
               Row(
                 children: [
-                  fieldPartPrice(_back),
+                  _back.part == true ? fieldPartPrice(_back) : Row(),
                   SizedBox(width: 15),
-                  fieldSegPrice(_back),
+                  _back.seg == true ? fieldSegPrice(_back) : Row(),
                 ],
               ),
               Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 20)),
@@ -64,8 +63,10 @@ class CarForm extends StatelessWidget {
               fieldDescription(_back),
               SizedBox(height: 15),
               buttonSaveCar(_back),
-            ],
-          ),
+                ],
+              );
+            },
+          ) , 
         ),
       ),
     );
@@ -119,30 +120,32 @@ class CarForm extends StatelessWidget {
     );
   }
 
-  Widget checkPart(BuildContext context){
+  Widget checkPart(BuildContext context, CarFormBack carBack){
     return Expanded(
-      child: CheckboxListTile(
-        title: Text('Particular'),
-        value: part,
-        controlAffinity: ListTileControlAffinity.leading,
-        onChanged: (newValue){
-          part = newValue;
-        }
+      child: Observer(builder: (context) {
+        return CheckboxListTile(
+          title: Text('Particular'),
+          value: carBack.part,
+          controlAffinity: ListTileControlAffinity.leading,
+          onChanged: (newValue) => carBack.changePart(newValue),
+          );
+        },
       ),
     );
   }
 
-  Widget checkSeg(BuildContext context){
+  Widget checkSeg(BuildContext context, CarFormBack carBack){
     return Expanded(
-      child: CheckboxListTile(
-        title: Text('Seguro'),
-        value: seg,
-        controlAffinity: ListTileControlAffinity.leading,
-        onChanged: (newValue){
-          seg = newValue;
+      child: Observer(builder: (context) { 
+        return CheckboxListTile(
+          title: Text('Seguro'),
+          value: carBack.seg,
+          controlAffinity: ListTileControlAffinity.leading,
+          onChanged: (newValue) => carBack.changeSeg(newValue),
+          );
         },
-      ),
-    );
+      )
+    ); 
   }
 
   Widget fieldPartPrice(CarFormBack carBack){
@@ -173,12 +176,15 @@ class CarForm extends StatelessWidget {
 
   Widget labelDescription(CarFormBack carBack){
     return Expanded(
-      child: Text( dateFormatted == null ? 'Selecione a data da entrega' : 'Entrege: ' + dateFormatted,
+      child: Observer(builder: (context) {
+        return Text( carBack.dateFormatted == null ? 'Selecione a data da entrega' : 'Entrege: ' + carBack.dateFormatted,
         style: TextStyle(
           fontSize: 18,
           color: Colors.black,
-        )
-      )
+            )
+          );
+        },
+      ) 
     );
   }
 
@@ -187,27 +193,10 @@ class CarForm extends StatelessWidget {
       child: IconButton(
         icon: Icon(Icons.date_range),
         onPressed: (){
-          _formatDate(context, carBack);
+          carBack.formatDate(context, carBack);
         },
-      )
-    );
-  }
-
-  _formatDate(BuildContext context, CarFormBack carBack){
-    return showDatePicker(
-      context: context, 
-      initialDate: DateTime.now(), 
-      firstDate: DateTime(2018), 
-      lastDate: DateTime(2050)).then((value){
-        if(value == null){
-          return;
-        }else{
-          DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-          dateFormatted = dateFormat.format(value);
-          carBack.car.finishDate = dateFormatted;
-        }
-      }
-    );
+      ),
+    ); 
   }
 
   Widget fieldDescription(CarFormBack carBack){
