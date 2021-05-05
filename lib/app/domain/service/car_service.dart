@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 
 class CarService{
 
-//var _carDao = GetIt.I.get<CarDao>();
+var _carDao = GetIt.I.get<CarDao>();
 
 saveCar(Car car){
   
@@ -17,7 +17,7 @@ deleteCar(int id){
 }
 
 Future<List<Car>> listAllCar(){
-  return null;
+  return _carDao.listAllCar();
 }
 
 

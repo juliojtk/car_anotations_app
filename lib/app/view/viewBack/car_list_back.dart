@@ -14,6 +14,7 @@ abstract class CarListBackBase with Store {
 //Instanciando, usando injeção de dependencia
 var _carService = GetIt.I.get<CarService>();
 
+@observable
 Future<List<Car>> listCar;
 
 
@@ -23,7 +24,15 @@ goToCarForm(BuildContext ctx, [Car car]){
 
 @action
 refresListCar([dynamic value]){
-  //listCar = _carService.listAllCar();
+  listCar = _carService.listAllCar();
+}
+
+CarListBackBase(){
+refresListCar();
+}
+
+remove(int id){
+  return null;
 }
 
 }
