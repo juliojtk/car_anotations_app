@@ -8,11 +8,12 @@ class CarService{
 var _carDao = GetIt.I.get<CarDao>();
 
 saveCar(Car car){
+  _carDao.saveCar(car);
   
 }
 
 deleteCar(int id){
-
+_carDao.deleteCar(id);
 
 }
 

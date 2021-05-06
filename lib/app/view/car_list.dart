@@ -86,7 +86,7 @@ class CarList extends StatelessWidget {
                                 _backListCar.goToCarForm(context, car);
                               }),
                               iconRemoveButton(context, (){
-                                //_backListCar.remove(car.id);
+                                _backListCar.removeCar(car.id);
                                 Navigator.of(context).pop();
                               }),
                             ],

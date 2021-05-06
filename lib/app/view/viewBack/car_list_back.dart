@@ -19,7 +19,7 @@ Future<List<Car>> listCar;
 
 
 goToCarForm(BuildContext ctx, [Car car]){
-  Navigator.of(ctx).pushNamed(AppRoutes.CAR_FORM, arguments: car).then(refresListCar());
+  Navigator.of(ctx).pushNamed(AppRoutes.CAR_FORM, arguments: car).then(refresListCar);
 }
 
 @action
@@ -31,8 +31,9 @@ CarListBackBase(){
 refresListCar();
 }
 
-remove(int id){
-  return null;
+removeCar(int id){
+  _carService.deleteCar(id);
+  refresListCar();
 }
 
 }

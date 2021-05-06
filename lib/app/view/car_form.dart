@@ -62,7 +62,7 @@ class CarForm extends StatelessWidget {
               SizedBox(height: 10),
               fieldDescription(_back),
               SizedBox(height: 15),
-              buttonSaveCar(_back),
+              buttonSaveCar(context, _back),
                 ],
               );
             },
@@ -177,7 +177,7 @@ class CarForm extends StatelessWidget {
   Widget labelDescription(CarFormBack carBack){
     return Expanded(
       child: Observer(builder: (context) {
-        return Text( carBack.dateFormatted == null ? 'Selecione a data da entrega' : 'Entrege: ' + carBack.dateFormatted,
+        return Text( (carBack.dateFormatted == null && carBack.car.finishDate == null) ? 'Selecione a data da entrega' : 'Entrege: ' + carBack.car.finishDate,
         style: TextStyle(
           fontSize: 18,
           color: Colors.black,
@@ -209,7 +209,7 @@ class CarForm extends StatelessWidget {
     );
   }
 
-  Widget buttonSaveCar(CarFormBack carBack){
+  Widget buttonSaveCar(BuildContext context, CarFormBack carBack){
     return Container(
       width: 150,
       child: FlatButton( 
@@ -225,7 +225,10 @@ class CarForm extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
         ),
         onPressed: (){
-
+          _carForm.currentState.validate();
+          _carForm.currentState.save();
+          carBack.saveCar();
+          Navigator.of(context).pop();
         },
       ),
     );

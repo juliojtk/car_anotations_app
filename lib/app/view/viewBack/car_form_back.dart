@@ -56,4 +56,14 @@ abstract class CarFormBackBase with Store{
     var parameter = ModalRoute.of(context).settings.arguments;
     car = (parameter == null) ? Car() : parameter;
   }
+
+  saveCar() async{
+    await _service.saveCar(car);
+  }
+
+  deleteCar(int id) async{
+    await _service.deleteCar(id);
+  }
+
+
 }
