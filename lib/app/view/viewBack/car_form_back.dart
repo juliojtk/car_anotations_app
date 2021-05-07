@@ -15,6 +15,8 @@ abstract class CarFormBackBase with Store{
   Car car;
   var _service = GetIt.I.get<CarService>();
 
+  bool isUpdate = false;
+
   @observable
   bool part = false;
 
@@ -53,8 +55,16 @@ abstract class CarFormBackBase with Store{
   }
 
   CarFormBackBase(BuildContext context){
+
     var parameter = ModalRoute.of(context).settings.arguments;
-    car = (parameter == null) ? Car() : parameter;
+
+  if(parameter == null){
+    car = Car();
+  }else{
+    isUpdate = true;
+    car = parameter;
+  }
+    //car = (parameter == null) ? Car() : parameter;
   }
 
   saveCar() async{

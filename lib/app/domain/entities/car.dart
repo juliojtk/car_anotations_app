@@ -1,11 +1,13 @@
+import 'dart:ffi';
+
 class Car{
 
 int id;
 String carName;
 String board;
 String color;
-String partPrice;
-String segPrice;
+double partPrice;
+double segPrice;
 String finishDate;
 String description;
 String isSeviceOk;

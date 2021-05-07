@@ -73,11 +73,12 @@ class CarList extends StatelessWidget {
                   itemCount: list.length,
                   itemBuilder: (context, i){
                     var car = list[i];
+                    var soma = car.partPrice + car.segPrice;
                     return Card(
                       child: ListTile(
                         leading: circleAvatar(),
                         title: Text(car.carName),
-                        subtitle: Text(car.partPrice),
+                        subtitle: Text('R\$: ' + soma.toString()),
                         trailing: Container(
                           width: 100,
                           child: Row(

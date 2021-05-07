@@ -9,13 +9,13 @@ class Connection{
   static Future<Database> getDatabase() async{
     if(_db == null){
       var path = join(await getDatabasesPath(), 'bd_car');
-      //deleteDatabase(path);
+      //deleteDatabase(path); 
       _db = await openDatabase(
         path,
         version: 1,
         onCreate: (db, version) {
           db.execute(createTable);
-          db.execute(insert);
+          //db.execute(insert);
         },
       );
     }

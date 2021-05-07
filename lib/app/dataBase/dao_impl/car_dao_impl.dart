@@ -18,8 +18,8 @@ Database _db;
         carName: line['carName'],
         board: line['board'],
         color: line['color'],
-        partPrice: line['partPrice'].toString(),
-        segPrice: line['segPrice'].toString(),
+        partPrice: line['partPrice'],
+        segPrice: line['segPrice'],
         finishDate: line['finishDate'],
         description: line['description'],
         isSeviceOk: line['isSeviceOk']

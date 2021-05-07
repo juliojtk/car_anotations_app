@@ -8,19 +8,19 @@ class CarForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var _back = CarFormBack(context);
     return Scaffold(
       backgroundColor: Colors.amberAccent,
       appBar: AppBar(
-        title: Text('Cadastro de Veículo'),
+        title: Text( _back.isUpdate == false ? 'Cadastrar Veículo' : 'Alterar Cadastro: ' + _back.car.carName),
         actions: [],
       ),
-      body: _body(context)
+      body: _body(context, _back)
     );
   }
 
-  Widget _body(BuildContext context){
-    var _back = CarFormBack(context);
-
+  Widget _body(BuildContext context, CarFormBack _back){
+    observerCheck(_back);
     return SingleChildScrollView(
       child: Padding(
       padding: EdgeInsets.all(10),
@@ -70,6 +70,15 @@ class CarForm extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  observerCheck(CarFormBack carBack){
+    if(carBack.car.partPrice != "" && carBack.part == false){
+      carBack.part = true;
+    }
+    if(carBack.car.segPrice != "" && carBack.seg == false){
+      carBack.seg = true;
+    }
   }
 
   Widget fieldCarName(CarFormBack carBack){
@@ -152,8 +161,8 @@ class CarForm extends StatelessWidget {
     return Expanded(
       child: TextFormField(
         validator: null,
-        onSaved: (newValue) => carBack.car.partPrice = newValue,
-        initialValue: carBack.car.partPrice,
+        onSaved: (newValue) => carBack.car.partPrice = double.parse(newValue.toString()),
+        initialValue: carBack.car.partPrice == null ? '' : carBack.car.partPrice.toString(),
         decoration: InputDecoration(
           labelText: 'Valor Particular'
         ),
@@ -165,8 +174,8 @@ class CarForm extends StatelessWidget {
     return Expanded(
       child: TextFormField(
         validator: null,
-        onSaved: (newValue) => carBack.car.segPrice = newValue,
-        initialValue: carBack.car.segPrice,
+        onSaved: (newValue) => carBack.car.segPrice = double.parse(newValue.toString()),
+        initialValue: carBack.car.segPrice == null ? '' : carBack.car.segPrice.toString(),
         decoration: InputDecoration(
           labelText: 'Valor Seguro'
         ),
@@ -214,12 +223,12 @@ class CarForm extends StatelessWidget {
       width: 150,
       child: FlatButton( 
         child: Text(
-          'Salvar', 
+          carBack.isUpdate == false ? 'Salvar' : 'Alterar', 
           style: TextStyle(
             fontSize: 18,
           ),
         ),
-        color: Colors.green,
+        color: carBack.isUpdate == false ? Colors.green : Colors.blue,
         textColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
