@@ -22,6 +22,10 @@ goToCarForm(BuildContext ctx, [Car car]){
   Navigator.of(ctx).pushNamed(AppRoutes.CAR_FORM, arguments: car).then(refresListCar);
 }
 
+goToCarDetails(BuildContext context, Car car){
+  Navigator.of(context).pushNamed(AppRoutes.CAR_DETAILS, arguments: car);
+}
+
 @action
 refresListCar([dynamic value]){
   listCar = _carService.listAllCar();
@@ -34,6 +38,18 @@ refresListCar();
 removeCar(int id){
   _carService.deleteCar(id);
   refresListCar();
+}
+
+double somaPrices(double part, double seg){
+  double soma;
+  if (part != null || seg != null) {
+    soma = part + seg;
+  }else{
+    part = 0.0;
+    seg = 0.0;
+    soma = part + seg;
+  }
+  return soma;
 }
 
 }

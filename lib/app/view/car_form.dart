@@ -84,7 +84,7 @@ class CarForm extends StatelessWidget {
   Widget fieldCarName(CarFormBack carBack){
     return Expanded(
       child: TextFormField(
-        validator: null,
+        validator: carBack.validateCarName,
         onSaved: (newValue) => carBack.car.carName = newValue,
         initialValue: carBack.car.carName,
         decoration: InputDecoration(
@@ -161,11 +161,13 @@ class CarForm extends StatelessWidget {
     return Expanded(
       child: TextFormField(
         validator: null,
-        onSaved: (newValue) => carBack.car.partPrice = double.parse(newValue.toString()),
+        keyboardType: TextInputType.number,
+        onSaved: (newValue) => carBack.validaPricePart(newValue),
         initialValue: carBack.car.partPrice == null ? '' : carBack.car.partPrice.toString(),
         decoration: InputDecoration(
-          labelText: 'Valor Particular'
+          labelText: 'Valor Particular',
         ),
+        style: TextStyle(fontSize: 19),
       )
     );
   }
@@ -174,11 +176,13 @@ class CarForm extends StatelessWidget {
     return Expanded(
       child: TextFormField(
         validator: null,
-        onSaved: (newValue) => carBack.car.segPrice = double.parse(newValue.toString()),
+        keyboardType: TextInputType.number,
+        onSaved: (newValue) => carBack.validaPriceSeg(newValue),
         initialValue: carBack.car.segPrice == null ? '' : carBack.car.segPrice.toString(),
         decoration: InputDecoration(
           labelText: 'Valor Seguro'
         ),
+        style: TextStyle(fontSize: 19),
       ),
     );
   }
@@ -236,8 +240,10 @@ class CarForm extends StatelessWidget {
         onPressed: (){
           _carForm.currentState.validate();
           _carForm.currentState.save();
+          if (carBack.isValid) {
           carBack.saveCar();
           Navigator.of(context).pop();
+          }
         },
       ),
     );

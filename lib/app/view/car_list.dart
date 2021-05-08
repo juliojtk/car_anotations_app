@@ -73,12 +73,15 @@ class CarList extends StatelessWidget {
                   itemCount: list.length,
                   itemBuilder: (context, i){
                     var car = list[i];
-                    var soma = car.partPrice + car.segPrice;
+                    var soma = _backListCar.somaPrices(car.partPrice, car.segPrice);
                     return Card(
                       child: ListTile(
                         leading: circleAvatar(),
                         title: Text(car.carName),
                         subtitle: Text('R\$: ' + soma.toString()),
+                        onTap: (){
+                          _backListCar.goToCarDetails(context, car);
+                        },
                         trailing: Container(
                           width: 100,
                           child: Row(

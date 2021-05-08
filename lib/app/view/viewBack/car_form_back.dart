@@ -15,6 +15,10 @@ abstract class CarFormBackBase with Store{
   Car car;
   var _service = GetIt.I.get<CarService>();
 
+  bool _nameIsValid;
+
+  bool get isValid => _nameIsValid;
+
   bool isUpdate = false;
 
   @observable
@@ -39,7 +43,7 @@ abstract class CarFormBackBase with Store{
   @action
   formatDate(BuildContext context, CarFormBack carBack){
     return showDatePicker(
-      context: context, 
+      context: context,
       initialDate: DateTime.now(), 
       firstDate: DateTime(2018), 
       lastDate: DateTime(2050)).then((value){
@@ -55,9 +59,7 @@ abstract class CarFormBackBase with Store{
   }
 
   CarFormBackBase(BuildContext context){
-
-    var parameter = ModalRoute.of(context).settings.arguments;
-
+  var parameter = ModalRoute.of(context).settings.arguments;
   if(parameter == null){
     car = Car();
   }else{
@@ -65,6 +67,35 @@ abstract class CarFormBackBase with Store{
     car = parameter;
   }
     //car = (parameter == null) ? Car() : parameter;
+  }
+
+  String validateCarName(String nome){
+    try{
+      _service.validateNameCar(nome);
+      _nameIsValid = true;
+      return null;
+    }catch(e){
+      _nameIsValid = false;
+      return e.toString();
+    }
+  }
+
+  validaPricePart(String newValue){
+    if(newValue == ''){
+      newValue = 0.0.toString();
+      car.partPrice = double.parse(newValue);
+    }else{
+      car.partPrice = double.parse(newValue);
+    }
+  }
+
+  validaPriceSeg(String newValue){
+    if(newValue == ''){
+      newValue = 0.0.toString();
+      car.segPrice = double.parse(newValue);
+    }else{
+      car.segPrice = double.parse(newValue);
+    }
   }
 
   saveCar() async{
