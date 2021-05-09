@@ -6,6 +6,14 @@ class CarDetailsBack{
   BuildContext context;
   Car car;
 
-  CarDetailsBack(this.context);
+  CarDetailsBack(this.context){
+    car = ModalRoute.of(context).settings.arguments;
+  }
+
+  goToBack(){
+    Navigator.of(context).pop();
+  }
+
+
 
 }

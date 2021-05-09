@@ -29,6 +29,28 @@ Database _db;
   }
 
   @override
+  Future<List<Car>> searchCar(String search) async{
+    _db = await Connection.getDatabase();
+    var sql = "SELECT * FROM carTable WHERE carName LIKE '%$search%' ";
+    List<Map<String, dynamic>> resultlist = await _db.rawQuery(sql);
+    List<Car> listNameCar = List.generate(resultlist.length, (i) {
+      var line = resultlist[i];
+      return Car(
+        id: line['id'],
+        carName: line['carName'],
+        board: line['board'],
+        color: line['color'],
+        partPrice: line['partPrice'],
+        segPrice: line['segPrice'],
+        finishDate: line['finishDate'],
+        description: line['description'],
+        isSeviceOk: line['isSeviceOk']
+      );
+    });
+    return listNameCar;
+  }
+
+  @override
   saveCar(Car car) async{
     _db = await Connection.getDatabase();
     var sql;

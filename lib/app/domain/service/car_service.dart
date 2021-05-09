@@ -23,6 +23,10 @@ Future<List<Car>> listAllCar(){
   return _carDao.listAllCar();
 }
 
+Future<List<Car>> searchCar(String name){
+  return _carDao.searchCar(name);
+}
+
 validateNameCar(String nome){
   var min = 2;
   var max = 50;

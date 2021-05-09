@@ -7,6 +7,8 @@ abstract class CarDao{
 
    deleteCar(int id);
 
+   Future<List<Car>> searchCar(String carName);
+
    Future<List<Car>> listAllCar();
 
 

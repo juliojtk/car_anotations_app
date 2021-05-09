@@ -17,6 +17,12 @@ var _carService = GetIt.I.get<CarService>();
 @observable
 Future<List<Car>> listCar;
 
+@observable
+Future<List<Car>> listCarName;
+
+@observable
+List<Car> mainList;
+
 
 goToCarForm(BuildContext ctx, [Car car]){
   Navigator.of(ctx).pushNamed(AppRoutes.CAR_FORM, arguments: car).then(refresListCar);
@@ -29,6 +35,20 @@ goToCarDetails(BuildContext context, Car car){
 @action
 refresListCar([dynamic value]){
   listCar = _carService.listAllCar();
+}
+
+@action
+searchCar(String name){
+  listCarName = _carService.searchCar(name);
+}
+
+@action
+changeFutureBuilder(BuildContext context, Future<List<Car>> listCar, Future<List<Car>> listCarName){
+  if(listCarName == null){
+    return listCar;
+  }else{
+    return listCarName;
+  }
 }
 
 CarListBackBase(){
