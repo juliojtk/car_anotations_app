@@ -11,6 +11,10 @@ class CarListBack = CarListBackBase with _$CarListBack;
 
 abstract class CarListBackBase with Store {
 
+CarListBackBase(){
+  refresListCar();
+}
+
 //Instanciando, usando injeção de dependencia
 var _carService = GetIt.I.get<CarService>();
 
@@ -18,19 +22,7 @@ var _carService = GetIt.I.get<CarService>();
 Future<List<Car>> listCar;
 
 @observable
-Future<List<Car>> listCarName;
-
-@observable
-List<Car> mainList;
-
-
-goToCarForm(BuildContext ctx, [Car car]){
-  Navigator.of(ctx).pushNamed(AppRoutes.CAR_FORM, arguments: car).then(refresListCar);
-}
-
-goToCarDetails(BuildContext context, Car car){
-  Navigator.of(context).pushNamed(AppRoutes.CAR_DETAILS, arguments: car);
-}
+List<Car> list;
 
 @action
 refresListCar([dynamic value]){
@@ -38,21 +30,8 @@ refresListCar([dynamic value]){
 }
 
 @action
-searchCar(String name){
-  listCarName = _carService.searchCar(name);
-}
-
-@action
-changeFutureBuilder(BuildContext context, Future<List<Car>> listCar, Future<List<Car>> listCarName){
-  if(listCarName == null){
-    return listCar;
-  }else{
-    return listCarName;
-  }
-}
-
-CarListBackBase(){
-refresListCar();
+searchCar(String value){
+  listCar = _carService.searchCar(value);
 }
 
 removeCar(int id){
@@ -62,14 +41,18 @@ removeCar(int id){
 
 double somaPrices(double part, double seg){
   double soma;
-  if (part != null || seg != null) {
-    soma = part + seg;
-  }else{
-    part = 0.0;
-    seg = 0.0;
-    soma = part + seg;
-  }
+  if(part == null) part = 0.0;
+  if(seg == null) seg = 0.0;
+  soma = part + seg;
   return soma;
+}
+
+goToCarForm(BuildContext ctx, [Car car]){
+  Navigator.of(ctx).pushNamed(AppRoutes.CAR_FORM, arguments: car).then(refresListCar);
+}
+
+goToCarDetails(BuildContext context, Car car){
+  Navigator.of(context).pushNamed(AppRoutes.CAR_DETAILS, arguments: car);
 }
 
 }

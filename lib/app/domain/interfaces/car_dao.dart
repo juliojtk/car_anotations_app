@@ -2,15 +2,11 @@
 
 abstract class CarDao{
 
-  
-   saveCar(Car car);
-
-   deleteCar(int id);
-
-   Future<List<Car>> searchCar(String carName);
-
-   Future<List<Car>> listAllCar();
-
+  Future<List<Car>> listAllCar();
+  Future<List<Car>> searchCar(String value);
+  saveCar(Car car);
+  deleteCar(int id);
+  updateServiceOk(String value, int id);
 
 
 }

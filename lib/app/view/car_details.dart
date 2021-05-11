@@ -1,3 +1,4 @@
+import 'package:car_anotations_app/app/appRoutes/app_routes.dart';
 import 'package:car_anotations_app/app/view/viewBack/car_details_back.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +6,7 @@ class CarDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var carBack = CarDetailsBack(context);
+    var carBackDetails = CarDetailsBack(context);
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints){
@@ -14,28 +15,28 @@ class CarDetails extends StatelessWidget {
         var radius = width/4;
 
         return Scaffold(
+          backgroundColor: Colors.blueGrey[50],
           body: ListView(
             padding: EdgeInsets.all(60),
             children: [
               CircleAvatar(
-                child: Icon(
-                  Icons.car_repair,
-                  size: width/3,
-                ),
+                child: carBackDetails.car.isSeviceOk == 'N' ? Icon(Icons.car_repair, size: width/3, color: Colors.black,) : Icon(Icons.car_rental, size: width/3, color: Colors.black,),
                 radius: radius,
+                backgroundColor: carBackDetails.car.isSeviceOk != 'N' ? Colors.green[400] : Colors.blue[400],
               ),
               SizedBox(height: 20,),
               Center(
-                child: Text('${carBack.car.carName.toUpperCase()} ${carBack.car.board.toUpperCase()}', style: TextStyle(fontSize: 18),),
+                child: Text('${carBackDetails.car.carName.toUpperCase()} ${carBackDetails.car.board.toUpperCase()}', style: TextStyle(fontSize: 18),),
               ),
               SizedBox(height: 10,),
               Center(
-                child: Text('${carBack.car.color.toUpperCase()}\n', textAlign: TextAlign.center,),
+                child: Text('${carBackDetails.car.color.toUpperCase()}\n', textAlign: TextAlign.center,),
               ),
               Card(
+                elevation: 20,
                 child: ListTile(
                   title: Text(
-                    'Total: ${carBack.car.partPrice + carBack.car.segPrice} ', 
+                    'Total: ${carBackDetails.car.partPrice + carBackDetails.car.segPrice} ', 
                     style: TextStyle(
                       fontSize: 20,
                       ),
@@ -43,7 +44,7 @@ class CarDetails extends StatelessWidget {
                     ),
                   subtitle: Padding(
                     child: Text(
-                    'Part: ${carBack.car.partPrice} \nSeg: ${carBack.car.segPrice}',
+                    'Part: ${carBackDetails.car.partPrice} \nSeg: ${carBackDetails.car.segPrice}',
                     style: TextStyle(
                       fontSize: 16,
                       ),
@@ -54,6 +55,7 @@ class CarDetails extends StatelessWidget {
                 ),
               ),
               Card(
+                elevation: 20,
                 child: ListTile(
                   title: Text(
                     'Descrição Serviço', 
@@ -63,7 +65,7 @@ class CarDetails extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   subtitle: Padding(
-                    child: Text('${carBack.car.description}',
+                    child: Text('${carBackDetails.car.description}',
                       style: TextStyle(
                         fontSize: 16
                       ),
@@ -74,9 +76,10 @@ class CarDetails extends StatelessWidget {
                 ),
               ),
               Card(
+                elevation: 20,
                 child: ListTile(
                   title: Text(
-                    carBack.car.finishDate == null ? 'Não Informado' : 'Entregue ${carBack.car.finishDate}'
+                    carBackDetails.changeLabelDate(),
                   ),
                   trailing: Container(
                     width: width/7,
@@ -92,7 +95,7 @@ class CarDetails extends StatelessWidget {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: Text('Confirmar Entrega'),
-                                content: Text('O veículo ${carBack.car.carName.toUpperCase()} \nPlaca: ${carBack.car.board.toUpperCase()} foi mesmo entregue?'),
+                                content: Text('O veículo ${carBackDetails.car.carName.toUpperCase()} \nPlaca: ${carBackDetails.car.board.toUpperCase()} já foi mesmo entregue?'),
                                 actions: [
                                   FlatButton(
                                     child: Text('Não'),
@@ -100,7 +103,10 @@ class CarDetails extends StatelessWidget {
                                   ),
                                   FlatButton(
                                     child: Text('Sim'),
-                                    onPressed: () => null,  
+                                    onPressed: () {
+                                      carBackDetails.isOk(carBackDetails.car.isSeviceOk, carBackDetails.car.id);
+                                      Navigator.of(context).pushNamed(AppRoutes.HOME);
+                                    }  
                                   )
                                 ],
                               )
@@ -121,7 +127,7 @@ class CarDetails extends StatelessWidget {
                 child: FloatingActionButton(
                   child: Icon(Icons.arrow_back),            
                   onPressed: (){
-                    carBack.goToBack();
+                    carBackDetails.goToBack();
                   },
                 ),
               ),

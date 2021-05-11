@@ -1,5 +1,7 @@
+import 'package:car_anotations_app/app/utils/text_edit_uppercase.dart';
 import 'package:car_anotations_app/app/view/viewBack/car_form_back.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class CarForm extends StatelessWidget {
@@ -88,7 +90,7 @@ class CarForm extends StatelessWidget {
         onSaved: (newValue) => carBack.car.carName = newValue,
         initialValue: carBack.car.carName,
         decoration: InputDecoration(
-          labelText: 'Nome Veículo'
+          labelText: 'Nome Veículo',
         ),
       ),
     );
@@ -97,8 +99,12 @@ class CarForm extends StatelessWidget {
   Widget fieldCarBoard(CarFormBack carBack){
     return Expanded(
       child: TextFormField(
+        inputFormatters: [
+          TextEditUppercase(),
+          LengthLimitingTextInputFormatter(7),
+        ],
         validator: null,
-        onSaved: (newValue) => carBack.car.board = newValue,
+        onSaved: (newValue) => carBack.car.board = newValue.toUpperCase(),
         initialValue: carBack.car.board,
         decoration: InputDecoration(
           labelText: 'Placa',
@@ -190,7 +196,7 @@ class CarForm extends StatelessWidget {
   Widget labelDescription(CarFormBack carBack){
     return Expanded(
       child: Observer(builder: (context) {
-        return Text( (carBack.dateFormatted == null && carBack.car.finishDate == null) ? 'Selecione a data da entrega' : 'Entrege: ' + carBack.car.finishDate,
+        return Text( (carBack.dateFormatted == null && carBack.car.finishDate == null) ? 'Data prevista da entrega' : 'Previsão de entrega: ' + carBack.car.finishDate,
         style: TextStyle(
           fontSize: 18,
           color: Colors.black,
@@ -248,5 +254,6 @@ class CarForm extends StatelessWidget {
       ),
     );
   }
+  
 
 }

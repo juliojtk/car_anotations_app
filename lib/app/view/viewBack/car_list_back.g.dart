@@ -24,18 +24,18 @@ mixin _$CarListBack on CarListBackBase, Store {
     });
   }
 
-  final _$listCarNameAtom = Atom(name: 'CarListBackBase.listCarName');
+  final _$listAtom = Atom(name: 'CarListBackBase.list');
 
   @override
-  Future<List<Car>> get listCarName {
-    _$listCarNameAtom.reportRead();
-    return super.listCarName;
+  List<Car> get list {
+    _$listAtom.reportRead();
+    return super.list;
   }
 
   @override
-  set listCarName(Future<List<Car>> value) {
-    _$listCarNameAtom.reportWrite(value, super.listCarName, () {
-      super.listCarName = value;
+  set list(List<Car> value) {
+    _$listAtom.reportWrite(value, super.list, () {
+      super.list = value;
     });
   }
 
@@ -54,11 +54,11 @@ mixin _$CarListBack on CarListBackBase, Store {
   }
 
   @override
-  dynamic searchCar(String name) {
+  dynamic searchCar(String value) {
     final _$actionInfo = _$CarListBackBaseActionController.startAction(
         name: 'CarListBackBase.searchCar');
     try {
-      return super.searchCar(name);
+      return super.searchCar(value);
     } finally {
       _$CarListBackBaseActionController.endAction(_$actionInfo);
     }
@@ -68,7 +68,7 @@ mixin _$CarListBack on CarListBackBase, Store {
   String toString() {
     return '''
 listCar: ${listCar},
-listCarName: ${listCarName}
+list: ${list}
     ''';
   }
 }

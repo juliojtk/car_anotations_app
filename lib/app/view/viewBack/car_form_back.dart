@@ -12,11 +12,20 @@ class CarFormBack = CarFormBackBase with _$CarFormBack;
 
 abstract class CarFormBackBase with Store{
 
+  CarFormBackBase(BuildContext context){
+    var parameter = ModalRoute.of(context).settings.arguments;
+    if(parameter == null){
+      car = Car();
+    }else{
+      isUpdate = true;
+      car = parameter;
+    }
+  }
+
   Car car;
   var _service = GetIt.I.get<CarService>();
 
   bool _nameIsValid;
-
   bool get isValid => _nameIsValid;
 
   bool isUpdate = false;
@@ -56,17 +65,6 @@ abstract class CarFormBackBase with Store{
         }
       }
     );
-  }
-
-  CarFormBackBase(BuildContext context){
-  var parameter = ModalRoute.of(context).settings.arguments;
-  if(parameter == null){
-    car = Car();
-  }else{
-    isUpdate = true;
-    car = parameter;
-  }
-    //car = (parameter == null) ? Car() : parameter;
   }
 
   String validateCarName(String nome){

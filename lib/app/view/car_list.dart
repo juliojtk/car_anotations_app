@@ -7,8 +7,6 @@ class CarList extends StatelessWidget {
 
   final _backListCar = CarListBack();
 
-  TextEditingController editingController = TextEditingController();
-
     @override
   Widget build(BuildContext context) {
     return Observer(
@@ -26,7 +24,7 @@ class CarList extends StatelessWidget {
             ],
           ),
           body: Container(
-            color: Colors.grey,
+            color: Colors.blueGrey[50],
             child: futureBuilde(context),     
           ),
         );
@@ -36,19 +34,19 @@ class CarList extends StatelessWidget {
 
   Widget futureBuilde(BuildContext context){
     return FutureBuilder(
-      future: _backListCar.changeFutureBuilder(context, _backListCar.listCar, _backListCar.listCarName),
+      future: _backListCar.listCar,
       builder: (context, futuro){
         if (!futuro.hasData) {
           return CircularProgressIndicator();
         }else{
-          _backListCar.mainList = futuro.data;  
-          return mainColumn(context, _backListCar.mainList);
+          _backListCar.list = futuro.data;  
+          return mainColumn(context, _backListCar.list);
         }
       },
     );
   }
 
-  Widget mainColumn(BuildContext context, List<Car> listCar){
+  Widget mainColumn(BuildContext context, List<Car> list){
     return Column(
       children: [
         Padding(
@@ -59,14 +57,15 @@ class CarList extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(5),
             child: ListView.builder(
-              itemCount: listCar.length,
+              itemCount: list.length,
               itemBuilder: (context, i){
-                var car = listCar[i];
+                var car = list[i];
                 var soma = _backListCar.somaPrices(car.partPrice, car.segPrice);
                 return Card(
+                  elevation: 15,
                   child: ListTile(
-                    leading: circleAvatar(),
-                    title: Text(car.carName),
+                    leading: circleAvatar(car.isSeviceOk),
+                    title: Text('${car.carName.toUpperCase()} \n${car.board.toUpperCase()}', style: TextStyle(fontSize: 16),),
                     subtitle: Text('R\$: ' + soma.toString()),
                     onTap: (){
                       _backListCar.goToCarDetails(context, car);
@@ -86,6 +85,7 @@ class CarList extends StatelessWidget {
                       ),
                     ),
                   ),
+                  color: car.isSeviceOk == 'S' ? Colors.green[100] : Colors.blueGrey[50],
                 );
               }
             ),
@@ -97,8 +97,6 @@ class CarList extends StatelessWidget {
 
   Widget textFieldSearch(BuildContext context){
   return TextFormField(
-    //enabled: true,
-    controller: editingController,
     decoration: InputDecoration(
       labelText: 'Buscar Veiculo',
       hintText: 'Buscar Veiculo',
@@ -111,27 +109,27 @@ class CarList extends StatelessWidget {
     onChanged: (value){
       _backListCar.searchCar(value);
     },
-    /*onTap: (){
-      _backListCar.searchCar(editingController.text.toString());
-    },*/
   );
 }
 
   //Criando Icon do carro
-  CircleAvatar circleAvatar()  {
-    return CircleAvatar(child: Icon(Icons.car_repair));
+  CircleAvatar circleAvatar(String serviceOk)  {
+    return CircleAvatar(
+      child: serviceOk == 'S' ? Icon(Icons.car_rental, color: Colors.black,) : Icon(Icons.car_repair, color: Colors.black,), 
+      backgroundColor: serviceOk != 'N' ? Colors.green[400] : Colors.blue[400],
+      );
   }
 
   //Criando Botão Editar
   Widget iconEditButton(Function onPressed){
-    return IconButton(icon: Icon(Icons.edit), color: Colors.orange, onPressed: onPressed);
+    return IconButton(icon: Icon(Icons.edit), color: Colors.deepPurple[800], onPressed: onPressed);
   }
 
   //Criando botao Excluir
    Widget iconRemoveButton(BuildContext context, Function remove){
     return IconButton(
       icon: Icon(Icons.delete), 
-      color: Colors.red, 
+      color: Colors.red[800], 
       onPressed: () {
         showDialog(
           context: context, 

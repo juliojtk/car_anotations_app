@@ -8,23 +8,25 @@ class CarService{
 
 var _carDao = GetIt.I.get<CarDao>();
 
-saveCar(Car car){
-  validateNameCar(car.carName);
-  _carDao.saveCar(car);
-  
-}
-
-deleteCar(int id){
-_carDao.deleteCar(id);
-
-}
-
 Future<List<Car>> listAllCar(){
   return _carDao.listAllCar();
 }
 
-Future<List<Car>> searchCar(String name){
-  return _carDao.searchCar(name);
+Future<List<Car>> searchCar(String value){
+  return _carDao.searchCar(value);
+}
+
+saveCar(Car car){
+  validateNameCar(car.carName);
+  _carDao.saveCar(car);
+}
+
+deleteCar(int id){
+  _carDao.deleteCar(id);
+}
+
+updateServiceOk(String value, int id){
+  _carDao.updateServiceOk(value, id);
 }
 
 validateNameCar(String nome){
@@ -38,7 +40,6 @@ validateNameCar(String nome){
   }else if(nome.length >= max){
     throw new LayerException('O nome deve possuir no máximo $max caracteres');
   }
-
 }
 
 
