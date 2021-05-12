@@ -17,6 +17,7 @@ CarListBackBase(){
 
 //Instanciando, usando injeção de dependencia
 var _carService = GetIt.I.get<CarService>();
+int swap = 0;
 
 @observable
 Future<List<Car>> listCar;
@@ -32,6 +33,17 @@ refresListCar([dynamic value]){
 @action
 searchCar(String value){
   listCar = _carService.searchCar(value);
+}
+
+@action
+serviceNotFinish(){
+  listCar = _carService.serviceNotFinish();
+  swap = 1;
+}
+
+Future<void> refresIndicator() async{
+  refresListCar();
+  swap = 0;
 }
 
 removeCar(int id){

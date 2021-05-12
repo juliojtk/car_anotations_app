@@ -1,3 +1,4 @@
+import 'package:car_anotations_app/app/appRoutes/app_routes.dart';
 import 'package:car_anotations_app/app/utils/text_edit_uppercase.dart';
 import 'package:car_anotations_app/app/view/viewBack/car_form_back.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,9 @@ class CarForm extends StatelessWidget {
   Widget build(BuildContext context) {
     var _back = CarFormBack(context);
     return Scaffold(
-      backgroundColor: Colors.amberAccent,
+      backgroundColor: Colors.amber[300],
       appBar: AppBar(
-        title: Text( _back.isUpdate == false ? 'Cadastrar Veículo' : 'Alterar Cadastro: ' + _back.car.carName),
+        title: Text( _back.isUpdate == false ? 'Cadastrar Veículo' : 'Alterar: ${_back.car.carName}'),
         actions: [],
       ),
       body: _body(context, _back)
@@ -75,10 +76,10 @@ class CarForm extends StatelessWidget {
   }
 
   observerCheck(CarFormBack carBack){
-    if(carBack.car.partPrice != "" && carBack.part == false){
+    if(carBack.car.partPrice != null && carBack.part == false){
       carBack.part = true;
     }
-    if(carBack.car.segPrice != "" && carBack.seg == false){
+    if(carBack.car.segPrice != null && carBack.seg == false){
       carBack.seg = true;
     }
   }
@@ -91,6 +92,7 @@ class CarForm extends StatelessWidget {
         initialValue: carBack.car.carName,
         decoration: InputDecoration(
           labelText: 'Nome Veículo',
+          labelStyle: TextStyle(fontSize: 17, color: Colors.black),
         ),
       ),
     );
@@ -108,6 +110,7 @@ class CarForm extends StatelessWidget {
         initialValue: carBack.car.board,
         decoration: InputDecoration(
           labelText: 'Placa',
+          labelStyle: TextStyle(fontSize: 17, color: Colors.black),
         ),
       ),
     );
@@ -120,6 +123,7 @@ class CarForm extends StatelessWidget {
       initialValue: carBack.car.color,
       decoration: InputDecoration(
         labelText: 'Cor',
+        labelStyle: TextStyle(fontSize: 17, color: Colors.black),
       ),
     );
   }
@@ -139,7 +143,7 @@ class CarForm extends StatelessWidget {
     return Expanded(
       child: Observer(builder: (context) {
         return CheckboxListTile(
-          title: Text('Particular'),
+          title: Text('Particular', style: TextStyle(fontSize: 18, color: Colors.black),),
           value: carBack.part,
           controlAffinity: ListTileControlAffinity.leading,
           onChanged: (newValue) => carBack.changePart(newValue),
@@ -153,7 +157,7 @@ class CarForm extends StatelessWidget {
     return Expanded(
       child: Observer(builder: (context) { 
         return CheckboxListTile(
-          title: Text('Seguro'),
+          title: Text('Seguro', style: TextStyle(fontSize: 18, color: Colors.black),),
           value: carBack.seg,
           controlAffinity: ListTileControlAffinity.leading,
           onChanged: (newValue) => carBack.changeSeg(newValue),
@@ -172,6 +176,7 @@ class CarForm extends StatelessWidget {
         initialValue: carBack.car.partPrice == null ? '' : carBack.car.partPrice.toString(),
         decoration: InputDecoration(
           labelText: 'Valor Particular',
+          labelStyle: TextStyle(fontSize: 17, color: Colors.black),
         ),
         style: TextStyle(fontSize: 19),
       )
@@ -186,7 +191,8 @@ class CarForm extends StatelessWidget {
         onSaved: (newValue) => carBack.validaPriceSeg(newValue),
         initialValue: carBack.car.segPrice == null ? '' : carBack.car.segPrice.toString(),
         decoration: InputDecoration(
-          labelText: 'Valor Seguro'
+          labelText: 'Valor Seguro',
+          labelStyle: TextStyle(fontSize: 17, color: Colors.black),
         ),
         style: TextStyle(fontSize: 19),
       ),
@@ -196,7 +202,7 @@ class CarForm extends StatelessWidget {
   Widget labelDescription(CarFormBack carBack){
     return Expanded(
       child: Observer(builder: (context) {
-        return Text( (carBack.dateFormatted == null && carBack.car.finishDate == null) ? 'Data prevista da entrega' : 'Previsão de entrega: ' + carBack.car.finishDate,
+        return Text( (carBack.dateFormatted == null && carBack.car.finishDate == null) ? 'Data prevista da entrega' : 'Previsão de entrega: ${carBack.car.finishDate}',
         style: TextStyle(
           fontSize: 18,
           color: Colors.black,
@@ -223,7 +229,8 @@ class CarForm extends StatelessWidget {
       onSaved: (newValue) => carBack.car.description = newValue,
       initialValue: carBack.car.description,
       decoration: InputDecoration(
-        labelText: 'Descrição do Serviço'
+        labelText: 'Descrição do Serviço',
+        labelStyle: TextStyle(fontSize: 17, color: Colors.black),
       ),
     );
   }
@@ -248,7 +255,7 @@ class CarForm extends StatelessWidget {
           _carForm.currentState.save();
           if (carBack.isValid) {
           carBack.saveCar();
-          Navigator.of(context).pop();
+          Navigator.of(context).pushReplacementNamed(AppRoutes.HOME);
           }
         },
       ),

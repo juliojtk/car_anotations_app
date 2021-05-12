@@ -33,6 +33,20 @@ class CarDetailsBack{
     return labelDate;
   }
 
+  validatePrice(double part, double seg){
+    if (part == null) part = 0.0;
+    if (seg == null) seg = 0.0;
+
+    return 'Total: ${part + seg}';
+  }
+
+    showPrice(double part, double seg){
+    if (part == null) part = 0.0;
+    if (seg == null) seg = 0.0;
+
+    return 'Particular: ${part.toDouble()} \nSeguro: ${seg.toDouble()}';
+  }
+
   goToBack(){
     Navigator.of(context).pop();
   }

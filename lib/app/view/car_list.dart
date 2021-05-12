@@ -23,9 +23,55 @@ class CarList extends StatelessWidget {
               ),
             ],
           ),
-          body: Container(
-            color: Colors.blueGrey[50],
-            child: futureBuilde(context),     
+          drawer: Drawer(
+            elevation: 50,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 40, bottom: 20, right: 15, left: 15),
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints){
+                  return SingleChildScrollView(
+                    child: Container(
+                      color: Colors.grey[200],
+                      child: Column(
+                        children: [
+                          UserAccountsDrawerHeader(
+                            decoration: BoxDecoration(color: Colors.purple[800]),
+                            currentAccountPicture: ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Image.network(
+                                'https://thumbs.dreamstime.com/b/procurando-o-carro-que-vende-%C3%ADcone-109371324.jpg',
+                                ),
+                              ),
+                            accountName: Text('Opções de buscas', style: TextStyle(fontSize: 20),), 
+                            accountEmail: Text(''),
+
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.find_in_page_outlined),
+                            title: Text('Veículos em aberto', style: TextStyle(fontSize: 17),),
+                            onTap: (){
+                              _backListCar.serviceNotFinish();
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.find_in_page_rounded),
+                            title: Text('Por periodo de data', style: TextStyle(fontSize: 17),),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              ),
+            ),
+          ),
+          body: RefreshIndicator(
+            onRefresh: _backListCar.refresIndicator,
+              child: Container(
+                color: Colors.blueGrey[50],
+                child: futureBuilde(context),     
+            ),
           ),
         );
       }
@@ -51,7 +97,7 @@ class CarList extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.all(8),
-          child: textFieldSearch(context),
+          child: _backListCar.swap == 0 ? textFieldSearch(context) : null,
         ),
         Expanded(
           child: Padding(
@@ -98,8 +144,8 @@ class CarList extends StatelessWidget {
   Widget textFieldSearch(BuildContext context){
   return TextFormField(
     decoration: InputDecoration(
-      labelText: 'Buscar Veiculo',
-      hintText: 'Buscar Veiculo',
+      labelText: 'Buscar Veículo por nome ou placa',
+      hintText: 'Buscar Veículo',
       prefixIcon: Icon(Icons.search),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(25),

@@ -65,6 +65,17 @@ mixin _$CarListBack on CarListBackBase, Store {
   }
 
   @override
+  dynamic serviceNotFinish() {
+    final _$actionInfo = _$CarListBackBaseActionController.startAction(
+        name: 'CarListBackBase.serviceNotFinish');
+    try {
+      return super.serviceNotFinish();
+    } finally {
+      _$CarListBackBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 listCar: ${listCar},

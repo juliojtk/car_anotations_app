@@ -62,30 +62,53 @@ return carList;
 }
 
 @override
-saveCar(Car car) async{
-  _db = await Connection.getDatabase();
-  var sql;
-  if(car.id == null){
-    sql = 'INSERT INTO $tableName ($carName, $board, $color, $partPrice, $segPrice, $finishDate, $description, $isSeviceOk) VALUES(?,?,?,?,?,?,?,?)';
-    _db.rawInsert(sql, [car.carName, car.board, car.color, car.partPrice, car.segPrice, car.finishDate, car.description, 'N']);
-  }else{
-    sql = 'UPDATE $tableName SET $carName = ?, $board = ?, $color = ?, $partPrice = ?, $segPrice = ?, $finishDate = ?, $description = ?, $isSeviceOk = ? WHERE id = ?';
-    _db.rawUpdate(sql, [car.carName, car.board, car.color, car.partPrice, car.segPrice, car.finishDate, car.description, car.isSeviceOk, car.id]);
+  Future<List<Car>>serviceNotFinish() async{
+    _db = await Connection.getDatabase();
+    var sql = "SELECT * FROM $tableName WHERE $isSeviceOk = 'N' ";
+    List<Map<String, dynamic>> result = await _db.rawQuery(sql);
+    List<Car> list = List.generate(result.length, (i) {
+      var line = result[i];
+      return Car(
+        id: line['id'],
+        carName: line['carName'],
+        board: line['board'],
+        color: line['color'],
+        partPrice: line['partPrice'],
+        segPrice: line['segPrice'],
+        finishDate: line['finishDate'],
+        description: line['description'],
+        isSeviceOk: line['isSeviceOk']
+        );
+      }
+    );
+    return list;
   }
-}
 
 @override
-deleteCar(int id) async{
-  _db = await Connection.getDatabase();
-  var sql = 'DELETE FROM $tableName WHERE id = ?';
-  _db.rawDelete(sql, [id]);
-}
+  saveCar(Car car) async{
+    _db = await Connection.getDatabase();
+    var sql;
+    if(car.id == null){
+      sql = 'INSERT INTO $tableName ($carName, $board, $color, $partPrice, $segPrice, $finishDate, $description, $isSeviceOk) VALUES(?,?,?,?,?,?,?,?)';
+      _db.rawInsert(sql, [car.carName, car.board, car.color, car.partPrice, car.segPrice, car.finishDate, car.description, 'N']);
+    }else{
+      sql = 'UPDATE $tableName SET $carName = ?, $board = ?, $color = ?, $partPrice = ?, $segPrice = ?, $finishDate = ?, $description = ?, $isSeviceOk = ? WHERE id = ?';
+      _db.rawUpdate(sql, [car.carName, car.board, car.color, car.partPrice, car.segPrice, car.finishDate, car.description, car.isSeviceOk, car.id]);
+    }
+  }
 
 @override
-updateServiceOk(String value, int id) async{
-  _db = await Connection.getDatabase();
-  var sql = 'UPDATE $tableName SET $isSeviceOk = ? WHERE id = ?';
-  _db.rawUpdate(sql, [value, id]);
-}
+  deleteCar(int id) async{
+    _db = await Connection.getDatabase();
+    var sql = 'DELETE FROM $tableName WHERE id = ?';
+    _db.rawDelete(sql, [id]);
+  }
+
+@override
+  updateServiceOk(String value, int id) async{
+    _db = await Connection.getDatabase();
+    var sql = 'UPDATE $tableName SET $isSeviceOk = ? WHERE id = ?';
+    _db.rawUpdate(sql, [value, id]);
+  }
 
 }

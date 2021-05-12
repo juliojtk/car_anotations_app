@@ -26,27 +26,25 @@ class CarDetails extends StatelessWidget {
               ),
               SizedBox(height: 20,),
               Center(
-                child: Text('${carBackDetails.car.carName.toUpperCase()} ${carBackDetails.car.board.toUpperCase()}', style: TextStyle(fontSize: 18),),
+                child: Text('${carBackDetails.car.carName.toUpperCase()} \n${carBackDetails.car.board.toUpperCase()}', style: TextStyle(fontSize: 19), textAlign: TextAlign.center,),
               ),
               SizedBox(height: 10,),
               Center(
-                child: Text('${carBackDetails.car.color.toUpperCase()}\n', textAlign: TextAlign.center,),
+                child: Text('${carBackDetails.car.color.toUpperCase()}\n', textAlign: TextAlign.center, style: TextStyle(fontSize: 15),),
               ),
               Card(
                 elevation: 20,
                 child: ListTile(
-                  title: Text(
-                    'Total: ${carBackDetails.car.partPrice + carBackDetails.car.segPrice} ', 
+                  title: Text( carBackDetails.validatePrice(carBackDetails.car.partPrice, carBackDetails.car.segPrice),
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 22,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   subtitle: Padding(
-                    child: Text(
-                    'Part: ${carBackDetails.car.partPrice} \nSeg: ${carBackDetails.car.segPrice}',
+                    child: Text(carBackDetails.showPrice(carBackDetails.car.partPrice, carBackDetails.car.segPrice),
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -60,14 +58,14 @@ class CarDetails extends StatelessWidget {
                   title: Text(
                     'Descrição Serviço', 
                     style: TextStyle(
-                      fontSize: 19
+                      fontSize: 22
                       ),
                     textAlign: TextAlign.center,
                   ),
                   subtitle: Padding(
                     child: Text('${carBackDetails.car.description}',
                       style: TextStyle(
-                        fontSize: 16
+                        fontSize: 18
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -79,7 +77,7 @@ class CarDetails extends StatelessWidget {
                 elevation: 20,
                 child: ListTile(
                   title: Text(
-                    carBackDetails.changeLabelDate(),
+                    carBackDetails.changeLabelDate(), style: TextStyle(color: carBackDetails.car.isSeviceOk == 'S' ? Colors.green[700] : Colors.black, fontSize: 19),
                   ),
                   trailing: Container(
                     width: width/7,

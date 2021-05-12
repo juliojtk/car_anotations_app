@@ -16,6 +16,10 @@ Future<List<Car>> searchCar(String value){
   return _carDao.searchCar(value);
 }
 
+Future<List<Car>>serviceNotFinish(){
+  return _carDao.serviceNotFinish();
+}
+
 saveCar(Car car){
   validateNameCar(car.carName);
   _carDao.saveCar(car);
