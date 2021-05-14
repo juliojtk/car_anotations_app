@@ -58,7 +58,7 @@ class CarForm extends StatelessWidget {
               Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 20)),
               Row(
                 children: [
-                  labelDescription(_back),
+                  labelDate(_back),
                   iconDate(context, _back),
                 ],
               ),
@@ -199,10 +199,10 @@ class CarForm extends StatelessWidget {
     );
   }
 
-  Widget labelDescription(CarFormBack carBack){
+  Widget labelDate(CarFormBack carBack){
     return Expanded(
       child: Observer(builder: (context) {
-        return Text( (carBack.dateFormatted == null && carBack.car.finishDate == null) ? 'Data prevista da entrega' : 'Previsão de entrega: ${carBack.car.finishDate}',
+        return Text( (carBack.dateFormatted == null && carBack.car.finishDate == null) ? 'Data prevista da entrega' : 'Previsão de entrega: ${carBack.dateLabel}',
         style: TextStyle(
           fontSize: 18,
           color: Colors.black,

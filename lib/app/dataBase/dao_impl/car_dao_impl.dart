@@ -84,6 +84,30 @@ return carList;
     return list;
   }
 
+  @override
+  Future<List<Car>>searchBetweenDates(String dateStart, String dateEnd) async{
+    _db = await Connection.getDatabase();
+    //var sql = "SELECT * FROM $tableName WHERE $finishDate >= '01/05/2021' and $finishDate <= '19/05/2021' ";
+    var sql = "SELECT * FROM $tableName WHERE $finishDate BETWEEN '$dateStart' AND '$dateEnd' ";
+    List<Map<String, dynamic>> result = await _db.rawQuery(sql);
+    List<Car> list = List.generate(result.length, (i) {
+      var line = result[i];
+      return Car(
+        id: line['id'],
+        carName: line['carName'],
+        board: line['board'],
+        color: line['color'],
+        partPrice: line['partPrice'],
+        segPrice: line['segPrice'],
+        finishDate: line['finishDate'],
+        description: line['description'],
+        isSeviceOk: line['isSeviceOk']
+        );
+      }
+    );
+    return list;
+  }
+
 @override
   saveCar(Car car) async{
     _db = await Connection.getDatabase();

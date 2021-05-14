@@ -19,6 +19,7 @@ abstract class CarFormBackBase with Store{
     }else{
       isUpdate = true;
       car = parameter;
+      formatDateShow(DateTime.parse(car.finishDate));
     }
   }
 
@@ -27,6 +28,7 @@ abstract class CarFormBackBase with Store{
 
   bool _nameIsValid;
   bool get isValid => _nameIsValid;
+  String dateLabel;
 
   bool isUpdate = false;
 
@@ -59,12 +61,21 @@ abstract class CarFormBackBase with Store{
         if(value == null){
           return;
         }else{
-          DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+          //Formato para salvar no Banco de Dados
+          DateFormat dateFormat = DateFormat('yyyy-MM-dd');
           dateFormatted = dateFormat.format(value);
           carBack.car.finishDate = dateFormatted;
+
+          formatDateShow(value);
         }
       }
     );
+  }
+
+  //Formato de data para visualizar
+  String formatDateShow(DateTime value){
+    DateFormat dateFormatLabel = DateFormat('dd-MM-yyyy');
+    return dateLabel = dateFormatLabel.format(value);
   }
 
   String validateCarName(String nome){

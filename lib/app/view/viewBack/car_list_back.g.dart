@@ -9,6 +9,37 @@ part of 'car_list_back.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CarListBack on CarListBackBase, Store {
+  final _$dateFormattedStartAtom =
+      Atom(name: 'CarListBackBase.dateFormattedStart');
+
+  @override
+  String get dateFormattedStart {
+    _$dateFormattedStartAtom.reportRead();
+    return super.dateFormattedStart;
+  }
+
+  @override
+  set dateFormattedStart(String value) {
+    _$dateFormattedStartAtom.reportWrite(value, super.dateFormattedStart, () {
+      super.dateFormattedStart = value;
+    });
+  }
+
+  final _$dateFormattedEndAtom = Atom(name: 'CarListBackBase.dateFormattedEnd');
+
+  @override
+  String get dateFormattedEnd {
+    _$dateFormattedEndAtom.reportRead();
+    return super.dateFormattedEnd;
+  }
+
+  @override
+  set dateFormattedEnd(String value) {
+    _$dateFormattedEndAtom.reportWrite(value, super.dateFormattedEnd, () {
+      super.dateFormattedEnd = value;
+    });
+  }
+
   final _$listCarAtom = Atom(name: 'CarListBackBase.listCar');
 
   @override
@@ -78,6 +109,8 @@ mixin _$CarListBack on CarListBackBase, Store {
   @override
   String toString() {
     return '''
+dateFormattedStart: ${dateFormattedStart},
+dateFormattedEnd: ${dateFormattedEnd},
 listCar: ${listCar},
 list: ${list}
     ''';

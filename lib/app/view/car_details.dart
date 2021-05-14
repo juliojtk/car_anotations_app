@@ -77,7 +77,7 @@ class CarDetails extends StatelessWidget {
                 elevation: 20,
                 child: ListTile(
                   title: Text(
-                    carBackDetails.changeLabelDate(), style: TextStyle(color: carBackDetails.car.isSeviceOk == 'S' ? Colors.green[700] : Colors.black, fontSize: 19),
+                    carBackDetails.changeLabelDate(carBackDetails.car.finishDate), style: TextStyle(color: carBackDetails.car.isSeviceOk == 'S' ? Colors.green[700] : Colors.black, fontSize: 19),
                   ),
                   trailing: Container(
                     width: width/7,

@@ -20,6 +20,10 @@ Future<List<Car>>serviceNotFinish(){
   return _carDao.serviceNotFinish();
 }
 
+Future<List<Car>> searchBetweenDates(String dateStart, String dateEnd){
+  return _carDao.searchBetweenDates(dateStart, dateEnd);
+}
+
 saveCar(Car car){
   validateNameCar(car.carName);
   _carDao.saveCar(car);

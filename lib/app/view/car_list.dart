@@ -1,3 +1,4 @@
+import 'package:car_anotations_app/app/appRoutes/app_routes.dart';
 import 'package:car_anotations_app/app/domain/entities/car.dart';
 import 'package:car_anotations_app/app/view/viewBack/car_list_back.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ class CarList extends StatelessWidget {
 
   final _backListCar = CarListBack();
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (context) {
@@ -25,45 +26,74 @@ class CarList extends StatelessWidget {
           ),
           drawer: Drawer(
             elevation: 50,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 40, bottom: 20, right: 15, left: 15),
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints){
-                  return SingleChildScrollView(
-                    child: Container(
-                      color: Colors.grey[200],
+            child: ListView(
+              children:[
+                SingleChildScrollView(
+                  child: Container(
+                    color: Colors.blue[500],
+                    child: DrawerHeader(
+                      padding: EdgeInsets.all(10),
                       child: Column(
                         children: [
-                          UserAccountsDrawerHeader(
-                            decoration: BoxDecoration(color: Colors.purple[800]),
-                            currentAccountPicture: ClipRRect(
-                              borderRadius: BorderRadius.circular(40),
-                              child: Image.network(
-                                'https://thumbs.dreamstime.com/b/procurando-o-carro-que-vende-%C3%ADcone-109371324.jpg',
+                          CircleAvatar(
+                            backgroundImage: NetworkImage('https://thumbs.dreamstime.com/b/procurando-o-carro-que-vende-%C3%ADcone-109371324.jpg'),
+                            maxRadius: 55,
+                            ),
+                            SizedBox(height: 8,),
+                          Text(' + Opções de buscas', style: TextStyle(fontSize: 20, color: Colors.black),)
+                        ],
+                      ),     
+                    ),
+                  ),
+                ),
+                ListTile(
+                leading: Icon(Icons.find_in_page_outlined),
+                title: Text('Veículos em aberto', style: TextStyle(fontSize: 17),),
+                onTap: (){
+                  _backListCar.serviceNotFinish();
+                  Navigator.of(context).pop();
+                },
+                ),
+                ListTile(
+                  leading: Icon(Icons.find_in_page_rounded),
+                  title: Text('Por periodo de data', style: TextStyle(fontSize: 17),
+                  ),
+                  onTap: (){
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Selecione as Datas'),
+                        actions: [
+                          Padding(
+                            padding: EdgeInsets.all(10), 
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    labelDateStart(_backListCar),
+                                    iconDateStart(context, _backListCar),
+                                  ],
                                 ),
-                              ),
-                            accountName: Text('Opções de buscas', style: TextStyle(fontSize: 20),), 
-                            accountEmail: Text(''),
-
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.find_in_page_outlined),
-                            title: Text('Veículos em aberto', style: TextStyle(fontSize: 17),),
-                            onTap: (){
-                              _backListCar.serviceNotFinish();
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.find_in_page_rounded),
-                            title: Text('Por periodo de data', style: TextStyle(fontSize: 17),),
+                                Row(
+                                  children: [
+                                    labelDateEnd(_backListCar),
+                                    iconDateEnd(context, _backListCar),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    iconSearchDate(context, _backListCar),
+                                  ],
+                                )
+                              ],
+                            )
                           )
                         ],
                       ),
-                    ),
-                  );
-                }
-              ),
+                    );
+                  },
+                ),
+              ] 
             ),
           ),
           body: RefreshIndicator(
@@ -142,21 +172,76 @@ class CarList extends StatelessWidget {
   }
 
   Widget textFieldSearch(BuildContext context){
-  return TextFormField(
-    decoration: InputDecoration(
-      labelText: 'Buscar Veículo por nome ou placa',
-      hintText: 'Buscar Veículo',
-      prefixIcon: Icon(Icons.search),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(25),
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Buscar Veículo por nome ou placa',
+        hintText: 'Buscar Veículo',
+        prefixIcon: Icon(Icons.search),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(25),
+          )
         )
-      )
-    ),
-    onChanged: (value){
-      _backListCar.searchCar(value);
-    },
-  );
-}
+      ),
+      onChanged: (value){
+        _backListCar.searchCar(value);
+      },
+    );
+  }
+
+  Widget labelDateStart(CarListBack carBack){
+    return Observer(builder: (context) {
+        return Text( (carBack.dateFormattedStart == null) ? 'Selecione a Data Início' : carBack.dateLabelStart,
+        style: TextStyle(
+          fontSize: 18,
+          color: Colors.black,
+            )
+          );
+        },
+      );
+  }
+
+  Widget iconDateStart(BuildContext context, CarListBack carBack){
+    return IconButton(
+      icon: Icon(Icons.date_range),
+      onPressed: (){
+        carBack.isDateStart = true;
+        carBack.formatDate(context, carBack);
+      },
+    );
+  }
+
+  Widget labelDateEnd(CarListBack carBack){
+    return Observer(builder: (context) {
+      return Text( (carBack.dateFormattedEnd == null) ? 'Selecione a Data Final' : carBack.dateLabelEnd,
+      style: TextStyle(
+        fontSize: 18,
+        color: Colors.black,
+          )
+        );
+      },
+    );
+  }
+
+  Widget iconDateEnd(BuildContext context, CarListBack carBack){
+    return IconButton(
+      icon: Icon(Icons.date_range),
+      onPressed: (){
+        carBack.isDateStart = false;
+        carBack.formatDate(context, carBack);
+      },
+    );
+  }
+
+  Widget iconSearchDate(BuildContext context, CarListBack carBack){
+    return FlatButton(
+      child: Icon(Icons.search),
+      onPressed: () {
+        carBack.searchBetweenDates(carBack.dateFormattedStart, carBack.dateFormattedEnd);
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      },
+    );
+  }
 
   //Criando Icon do carro
   CircleAvatar circleAvatar(String serviceOk)  {
