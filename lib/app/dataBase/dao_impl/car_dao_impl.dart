@@ -45,18 +45,7 @@ return carList;
     var sql = "SELECT * FROM $tableName WHERE $carName LIKE '%$value%' OR $board LIKE '%$value%'";
     List<Map<String, dynamic>> resultlist = await _db.rawQuery(sql);
     List<Car> listNameCar = List.generate(resultlist.length, (i) {
-      var line = resultlist[i];
-      return Car(
-        id: line['id'],
-        carName: line['carName'],
-        board: line['board'],
-        color: line['color'],
-        partPrice: line['partPrice'],
-        segPrice: line['segPrice'],
-        finishDate: line['finishDate'],
-        description: line['description'],
-        isSeviceOk: line['isSeviceOk']
-      );
+      return Car.mapToModel(resultlist[i]);
     });
   return listNameCar;
 }
@@ -67,18 +56,7 @@ return carList;
     var sql = "SELECT * FROM $tableName WHERE $isSeviceOk = 'N' ";
     List<Map<String, dynamic>> result = await _db.rawQuery(sql);
     List<Car> list = List.generate(result.length, (i) {
-      var line = result[i];
-      return Car(
-        id: line['id'],
-        carName: line['carName'],
-        board: line['board'],
-        color: line['color'],
-        partPrice: line['partPrice'],
-        segPrice: line['segPrice'],
-        finishDate: line['finishDate'],
-        description: line['description'],
-        isSeviceOk: line['isSeviceOk']
-        );
+      return Car.mapToModel(result[i]);
       }
     );
     return list;
@@ -91,18 +69,7 @@ return carList;
     var sql = "SELECT * FROM $tableName WHERE $finishDate BETWEEN '$dateStart' AND '$dateEnd' ";
     List<Map<String, dynamic>> result = await _db.rawQuery(sql);
     List<Car> list = List.generate(result.length, (i) {
-      var line = result[i];
-      return Car(
-        id: line['id'],
-        carName: line['carName'],
-        board: line['board'],
-        color: line['color'],
-        partPrice: line['partPrice'],
-        segPrice: line['segPrice'],
-        finishDate: line['finishDate'],
-        description: line['description'],
-        isSeviceOk: line['isSeviceOk']
-        );
+      return Car.mapToModel(result[i]);
       }
     );
     return list;

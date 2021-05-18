@@ -111,6 +111,11 @@ double somaPrices(double part, double seg){
   return soma;
 }
 
+cleanDates(){
+  dateFormattedStart = null;
+  dateFormattedEnd = null;
+}
+
 goToCarForm(BuildContext ctx, [Car car]){
   Navigator.of(ctx).pushNamed(AppRoutes.CAR_FORM, arguments: car).then(refresListCar);
 }

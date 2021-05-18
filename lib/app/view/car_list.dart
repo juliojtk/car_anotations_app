@@ -1,4 +1,4 @@
-import 'package:car_anotations_app/app/appRoutes/app_routes.dart';
+
 import 'package:car_anotations_app/app/domain/entities/car.dart';
 import 'package:car_anotations_app/app/view/viewBack/car_list_back.dart';
 import 'package:flutter/material.dart';
@@ -62,30 +62,33 @@ class CarList extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: Text('Selecione as Datas'),
+                        title: Text('Selecione as Datas', textAlign: TextAlign.center,),
                         actions: [
                           Padding(
                             padding: EdgeInsets.all(10), 
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    labelDateStart(_backListCar),
-                                    iconDateStart(context, _backListCar),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    labelDateEnd(_backListCar),
-                                    iconDateEnd(context, _backListCar),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    iconSearchDate(context, _backListCar),
-                                  ],
-                                )
-                              ],
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      labelDateStart(_backListCar),
+                                      iconDateStart(context, _backListCar),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      labelDateEnd(_backListCar),
+                                      iconDateEnd(context, _backListCar),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      iconSearchDate(context, _backListCar),
+                                    ],
+                                  )
+                                ],
+                              ),
                             )
                           )
                         ],
@@ -190,19 +193,21 @@ class CarList extends StatelessWidget {
 
   Widget labelDateStart(CarListBack carBack){
     return Observer(builder: (context) {
-        return Text( (carBack.dateFormattedStart == null) ? 'Selecione a Data Início' : carBack.dateLabelStart,
+      return Text( (carBack.dateFormattedStart == null) ? 'Selecione a Data Início' : '${carBack.dateLabelStart}',
         style: TextStyle(
           fontSize: 18,
           color: Colors.black,
-            )
-          );
-        },
-      );
+          ), 
+          textAlign: TextAlign.center,
+        );
+      },
+    );
   }
 
   Widget iconDateStart(BuildContext context, CarListBack carBack){
     return IconButton(
       icon: Icon(Icons.date_range),
+      alignment: Alignment.center,
       onPressed: (){
         carBack.isDateStart = true;
         carBack.formatDate(context, carBack);
@@ -212,11 +217,12 @@ class CarList extends StatelessWidget {
 
   Widget labelDateEnd(CarListBack carBack){
     return Observer(builder: (context) {
-      return Text( (carBack.dateFormattedEnd == null) ? 'Selecione a Data Final' : carBack.dateLabelEnd,
-      style: TextStyle(
-        fontSize: 18,
-        color: Colors.black,
-          )
+      return Text( (carBack.dateFormattedEnd == null) ? 'Selecione a Data Final' : '${carBack.dateLabelEnd} ',
+        style: TextStyle(
+          fontSize: 18,
+          color: Colors.black,
+          ),
+          textAlign: TextAlign.center,
         );
       },
     );
@@ -225,6 +231,7 @@ class CarList extends StatelessWidget {
   Widget iconDateEnd(BuildContext context, CarListBack carBack){
     return IconButton(
       icon: Icon(Icons.date_range),
+      alignment: Alignment.center,
       onPressed: (){
         carBack.isDateStart = false;
         carBack.formatDate(context, carBack);
@@ -239,6 +246,7 @@ class CarList extends StatelessWidget {
         carBack.searchBetweenDates(carBack.dateFormattedStart, carBack.dateFormattedEnd);
         Navigator.of(context).pop();
         Navigator.of(context).pop();
+        carBack.cleanDates();
       },
     );
   }
