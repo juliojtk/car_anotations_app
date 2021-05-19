@@ -36,7 +36,9 @@ class CarList extends StatelessWidget {
                       child: Column(
                         children: [
                           CircleAvatar(
-                            backgroundImage: NetworkImage('https://thumbs.dreamstime.com/b/procurando-o-carro-que-vende-%C3%ADcone-109371324.jpg'),
+                            child: Icon(Icons.search, size: 80, color: Colors.white,),
+                            backgroundColor: Colors.black,
+                            //backgroundImage: NetworkImage('https://thumbs.dreamstime.com/b/procurando-o-carro-que-vende-%C3%ADcone-109371324.jpg'),
                             maxRadius: 55,
                             ),
                             SizedBox(height: 8,),
