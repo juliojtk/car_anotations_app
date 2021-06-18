@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="car_anotations_app"
+        android:label="Serviços de Veículos"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
