@@ -19,7 +19,7 @@ abstract class CarFormBackBase with Store{
     }else{
       isUpdate = true;
       car = parameter;
-      formatDateShow(DateTime.parse(car.finishDate));
+      formatDateShow(DateTime.parse(car.finishDate == null ? DateTime.now().toString() : car.finishDate));
     }
   }
 
