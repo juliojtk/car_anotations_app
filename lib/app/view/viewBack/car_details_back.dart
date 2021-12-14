@@ -29,7 +29,7 @@ class CarDetailsBack{
     String labelDate;
 
     DateFormat dateFormat = DateFormat('dd-MM-yyyy');
-    dateFormatted = dateFormat.format(DateTime.parse(value));
+    dateFormatted = dateFormat.format(DateTime.parse(value == null ? DateTime.now().toString() : value));
 
     if(car.finishDate == null){
       labelDate = 'Não Informado';
